@@ -1,0 +1,15 @@
+rockit colabs
+
+rfid enterance --  lock-a-tron access  video schleg lock or relay
+
+app that buzzes door through a relay 
+
+most interested in bitcoin ATM only available when members are here through contact relay
+bitcoin ATM has an interface open or closed, ATM needs twilio access and backend to hook the relay 
+
+has know-you-customer feature with cell phone verification
+
+software way: give access to the web
+   algorithmic code to hash the timestamp
+   encrypted checksum method to verify access
+
