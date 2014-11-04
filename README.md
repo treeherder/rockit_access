@@ -30,5 +30,5 @@ Txtr:
 
 TODO:
 -----
-[ ] make everything work of off secret auth info file
-[ ] make engine methods return instead of simply print
+*[]make everything work of off secret auth info file
+*[]make engine methods return instead of simply print
