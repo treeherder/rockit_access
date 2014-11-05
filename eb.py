@@ -21,10 +21,17 @@ def authorize_schedule():
   for ret in ret_list:
       #print ret_list[ret] ["start"],
       #print ret_list[ret] ["end"]
-      (x,y) = json.dumps(ret_list[ret] ["start"]).split(' ')
-      x = x.replace('"', '').strip()
-      y = y.replace('"', '').strip()
-      print( (x,y) )
+      (start_date,start_time) = json.dumps(ret_list[ret] ["start"]).split(' ')
+      start_date = start_date.replace('"', '').strip()
+      start_time = start_time.replace('"', '').strip()
+      print( (start_date,start_time) )
+
+      (end_date,end_time) = json.dumps(ret_list[ret] ["end"]).split(' ')
+      end_date = end_date.replace('"', '').strip()
+      end_time = end_time.replace('"', '').strip()
+      print( (end_date,end_time) )
+
+
 
 def authorize_user():
   for x in xrange(len(ret_list)):
