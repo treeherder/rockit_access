@@ -1,4 +1,5 @@
 from secret import *
+import json
 
 r = eb.user_list_events()
 ret_list ={}
@@ -20,8 +21,11 @@ def authorize_schedule():
   for ret in ret_list:
       #print ret_list[ret] ["start"],
       #print ret_list[ret] ["end"]
-      (x,y) = ret_list[ret] ["start"].split(' ')
-      print (x,y)
+      (x,y) = json.dumps(ret_list[ret] ["start"]).split(' ')
+      x = x.replace('"', '').strip()
+      y = y.replace('"', '').strip()
+      print( (x,y) )
+
 def authorize_user():
   for x in xrange(len(ret_list)):
     person = eb.list_event_attendees({'id':ret_list[x]['id']})
