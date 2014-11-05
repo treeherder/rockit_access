@@ -6,7 +6,7 @@ ret_list ={}
 def touch_events():
   for x in xrange(len(r['events'])):  #iterate over the events
     ret={}
-    if (r['events'][x]['event']['status'] == "Live" ):  
+    if (r['events'][x]['event']['status'] == "Live" ):
       ret['id']=r['events'][x]['event']['id']
       ret['title'] = r['events'][x]['event']['title']
       ret['status'] = r['events'][x]['event']['status']
@@ -25,7 +25,7 @@ def authorize_schedule():
 def authorize_user():
   for x in xrange(len(ret_list)):
     person = eb.list_event_attendees({'id':ret_list[x]['id']})
-    print person 
+    print person
 
 touch_events()
 authorize_schedule()
