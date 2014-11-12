@@ -1,8 +1,9 @@
 from twilio.rest import TwilioRestClient
 from pymongo import MongoClient
-import json
+from eb_api_handler import *
+import json, datetime
 
-class Txtr():
+class Txtr(): #twilio is straightforward and does not need complicated wrappers
   def __init__(self, db_name, col_name):
     self.client = MongoClient()
     self.db = self.client[db_name]
@@ -23,5 +24,16 @@ class Txtr():
       print message.from_
 
 
-
-
+class Calendar(): #handle eb API
+  def __init__(self):
+    self.today = datetime.date.today().strftime("%Y-%m-%d")
+  def get_list_of_times(self):
+    valid_times = []
+    for timeslot in authorize_schedule(touch_events()):
+      print timeslot
+      if self.today not in timeslot[0][0]:
+        print "event mot scheduled for today"
+      else: # this needs to handle events of an arbitrary duration / period
+        print "found scheduled event"
+        valid_times.append(timeslot[0:])
+    return valid_times

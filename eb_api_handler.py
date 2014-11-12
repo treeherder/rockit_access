@@ -47,13 +47,3 @@ def authorize_user(ret_list): # takes a dictionary
         print "there was an error found on ", visitor['email'], e
   print (authorized_users)
   return (authorized_users) 
-
-         #print type(x['attendee']['cell_phone']),
-       
-      #person = people[x]
-      #print person["cell_phone"]
-
-#for x in authorize_schedule(touch_events()):
-#  print x
-
-authorize_user(touch_events())
