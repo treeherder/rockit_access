@@ -4,7 +4,7 @@ import json
 r = eb.user_list_events()
 
 def touch_events():  #returns a dictionary of live events
-  ret_list = {}
+  ret_list = []
   for x in xrange(len(r['events'])):  #iterate over the events
     ret={}
     if (r['events'][x]['event']['status'] == "Live" ):
@@ -13,7 +13,7 @@ def touch_events():  #returns a dictionary of live events
       ret['status'] = r['events'][x]['event']['status']
       ret['start'] = r['events'][x]['event']['start_date']
       ret['end'] = r['events'][x]['event']['end_date']
-      ret_list[ret['id']] = (ret)
+      ret_list.append(ret)
   return (ret_list)
 
 def authorize_schedule(ret_list):  #takes a dictionary  returns a list of tuples that frame the event 

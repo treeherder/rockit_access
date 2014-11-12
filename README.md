@@ -16,12 +16,17 @@ Txtr:
 
 Calendar
 - provides query functions to scheduling data
+- should find  IS THERE AN EVENT RIGHT NOW
+- should find  WHO IS EXPECTED TO ATTEND
+
 - list_timeslots():
-  - returns a list of profiles who are expected at the event, if there is currently an event
+  - a list of tuples of that are (start , end) tuples of (date, time) tuples
+    - [ ( (start date,  start time), (end date, end time) ) ,( (start date,  start time), (end date, end time) ), etc. ...]
 
 
+  
 ####Dependencies
---------
+------
 #####packages:
  -eventbrite
  -twilio
