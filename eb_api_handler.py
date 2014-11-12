@@ -30,7 +30,7 @@ def authorize_schedule(ret_list):  #takes a dictionary  returns a list of tuples
   return (valid_times)
 
 
-def authorize_user(ret_list): # takes a dictionary 
+def authorize_user(ret_list): # takes a dictionary, returns a list of user attributes tuples
   authorized_users = []
   for a_event in ret_list:
     event = eb.list_event_attendees({'id':ret_list[a_event]['id']})

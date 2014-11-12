@@ -26,14 +26,14 @@ class Txtr(): #twilio is straightforward and does not need complicated wrappers
 
 class Calendar(): #handle eb API
   def __init__(self):
-    self.today = datetime.date.today().strftime("%Y-%m-%d")
-  def get_list_of_times(self):
-    valid_times = []
+    self.today = datetime.date.today().strftime("%Y-%m-%d")  #format date for EB output
+  def list_timeslots(self):
+    valid_timeslots = []
     for timeslot in authorize_schedule(touch_events()):
       print timeslot
       if self.today not in timeslot[0][0]:
         print "event mot scheduled for today"
       else: # this needs to handle events of an arbitrary duration / period
         print "found scheduled event"
-        valid_times.append(timeslot[0:])
-    return valid_times
+        valid_timeslots.append(timeslot[0:])
+    return valid_timeslots
