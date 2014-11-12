@@ -1,7 +1,7 @@
 rockit_access
 =============
 
-a bare-bones access system API for a san francisco bsaed co-working and hacking space
+a bare-bones access system API for a san francisco based co-working and hacking space
 
 
 
@@ -14,8 +14,10 @@ Txtr:
 - get text():
   - prints  all messages sent to the number hardcoded into the library
 
-
-
+Calendar
+- provides query functions to scheduling data
+- list_timeslots():
+  - returns a list of profiles who are expected at the event, if there is currently an event
 
 
 ####Dependencies
