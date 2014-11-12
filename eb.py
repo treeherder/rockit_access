@@ -3,7 +3,7 @@ import json
 
 r = eb.user_list_events()
 
-def touch_events():  #gets live events 
+def touch_events():  #returns a dictionary of live events
   ret_list = {}
   for x in xrange(len(r['events'])):  #iterate over the events
     ret={}
@@ -16,7 +16,7 @@ def touch_events():  #gets live events
       ret_list[ret['id']] = (ret)
   return (ret_list)
 
-def authorize_schedule(ret_list):  #returns a list of tuples that frame the event 
+def authorize_schedule(ret_list):  #takes a dictionary  returns a list of tuples that frame the event 
   valid_times = []
   for ret in ret_list:
       (start_date,start_time) = json.dumps(ret_list[ret] ["start"]).split(' ')
@@ -30,11 +30,30 @@ def authorize_schedule(ret_list):  #returns a list of tuples that frame the even
   return (valid_times)
 
 
-def authorize_user():
+def authorize_user(ret_list): # takes a dictionary 
+  authorized_users = []
+  for a_event in ret_list:
+    event = eb.list_event_attendees({'id':ret_list[a_event]['id']})
+    people = event["attendees"]
+    for ident in people:
+      visitor = ident['attendee']
+      try:
+        name = visitor['first_name']
+        phone = visitor['cell_phone']
+        email = visitor['email'] 
+        vis = (name, phone, email)
+        authorized_users.append(vis)
+      except KeyError, e:
+        print "there was an error found on ", visitor['email'], e
+  print (authorized_users)
+  return (authorized_users) 
 
-  for x in xrange(len(ret_list)):
-    person = eb.list_event_attendees({'id':ret_list[x]['id']})
-    print person
+         #print type(x['attendee']['cell_phone']),
+       
+      #person = people[x]
+      #print person["cell_phone"]
 
-for x in authorize_schedule(touch_events()):
-  print x
+#for x in authorize_schedule(touch_events()):
+#  print x
+
+authorize_user(touch_events())
