@@ -19,8 +19,8 @@ class Txtr(): #twilio is straightforward and does not need complicated wrappers
                                       from_="15102545456")
   def get_texts(self):
     for message in self.twil.messages.list(to ="15102545456"):
-      print message.body
-      print message.date_sent
+      print message.body,
+      print message.date_sent,
       print message.from_
 
 
@@ -30,8 +30,13 @@ class Calendar(): #handle eb API
   
   def list_timeslots(self): #returns list of timeslot tuples
     timeslots = []
-    print touch_events()[0]
-    #for timeslot_id in authorize_schedule(touch_events()['id']):
+    for events in touch_events():
+      date_format = "%Y-%m-%d %H:%M:%S"
+      start_time_obj = datetime.datetime.strptime("{0}".format(events["start"]), date_format)
+      print start_time_obj
+      end_time_obj = datetime.datetime.strptime("{0}".format(events["end"]), date_format)
+      print end_time_obj
+    #for timeslot_id in authorize_schedule(touch_event:
      # print timeslot_id
       #timeslots.append(timeslot[0:])
     #return timeslots
