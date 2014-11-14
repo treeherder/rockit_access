@@ -1,7 +1,7 @@
 from engine import Calendar
 from datetime import datetime
 c = Calendar()
-y = c.list_numbers()  #a list of tuples of that are (start , end) tuples of (date, time) tuples
+y = c.list_numbers() #a list of tuples of that are (start , end) tuples of (date, time) tuples
 #( (start date,  start time), (end date, end time) ) 
 
 #print y[0], len(y), type(y[0][0][0])

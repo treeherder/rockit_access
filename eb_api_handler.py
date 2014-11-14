@@ -48,7 +48,6 @@ def authorize_user(an_event): # takes a dictionary, returns a list of user attri
       authorized_users.append(vis)
     except KeyError, e:
       unauthorized_users.append(visitor['email'])
-      #print "there was an error found on ", visitor['email'], e  #debugging
-  #print (authorized_users)
+      #print "there was an error found on ", visitor['email'], e  # debugging
   return ({"allowed" : authorized_users, "denied":unauthorized_users})
   
