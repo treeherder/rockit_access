@@ -1,10 +1,8 @@
 from engine import Calendar
 from datetime import datetime
 c = Calendar()
-y = c.list_timeslots()  #a list of tuples of that are (start , end) tuples of (date, time) tuples
+y = c.list_numbers()  #a list of tuples of that are (start , end) tuples of (date, time) tuples
 #( (start date,  start time), (end date, end time) ) 
-#for idx in xrange(len(y)):
-#  print y[idx]
 
 #print y[0], len(y), type(y[0][0][0])
 #a_date,a_time = (y[0][0][0], y[0][0][1])

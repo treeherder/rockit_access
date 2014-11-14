@@ -33,13 +33,12 @@ class Calendar(): #handle eb API
     for events in touch_events():
       date_format = "%Y-%m-%d %H:%M:%S"
       start_time_obj = datetime.datetime.strptime("{0}".format(events["start"]), date_format)
-      print start_time_obj
+      #print start_time_obj
       end_time_obj = datetime.datetime.strptime("{0}".format(events["end"]), date_format)
-      print end_time_obj
-    #for timeslot_id in authorize_schedule(touch_event:
-     # print timeslot_id
-      #timeslots.append(timeslot[0:])
-    #return timeslots
+      #print end_time_obj
+      timeslots.append( (start_time_obj, end_time_obj) )
+    return timeslots
 
-  #def validate_timeslot(self, timeslots):
+  def list_numbers(self):
+    print(authorize_user(touch_events()))
     
