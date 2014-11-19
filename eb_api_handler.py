@@ -3,11 +3,11 @@ import json
 
 r = eb.user_list_events()
 
-def touch_events():  #returns a list of live event dictionaries
+def touch_events(status):  #returns a list of live event dictionaries
   ret_list = []
   for x in xrange(len(r['events'])):  #iterate over the events
     ret={}
-    if (r['events'][x]['event']['status'] == "Started" ):
+    if (r['events'][x]['event']['status'] == status):
       ret['id']=r['events'][x]['event']['id']
       ret['title'] = r['events'][x]['event']['title']
       ret['status'] = r['events'][x]['event']['status']
@@ -36,7 +36,7 @@ def authorize_user(an_event): # takes a dictionary, returns a list of user attri
   authorized_users = []
   unauthorized_users = []
   user_list = eb.list_event_attendees({'id':int(an_event[0]['id'])})
-  print user_list
+  #print user_list
   people = user_list["attendees"]
   for ident in people:
     visitor = ident['attendee']
@@ -44,7 +44,7 @@ def authorize_user(an_event): # takes a dictionary, returns a list of user attri
       name = visitor['first_name']
       phone = visitor['cell_phone']
       email = visitor['email'] 
-      vis = (name, phone, email)
+      vis = {"name":name, "phone":phone, "email":email}
       authorized_users.append(vis)
     except KeyError, e:
       unauthorized_users.append(visitor['email'])
