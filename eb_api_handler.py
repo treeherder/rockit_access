@@ -1,9 +1,11 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 from secret import *
 import json
 
 r = eb.user_list_events()
 
-def touch_events(status):  #returns a list of live event dictionaries
+def touch_events(status):  #returns a list of <status> event dictionaries
   ret_list = []
   for x in xrange(len(r['events'])):  #iterate over the events
     ret={}
@@ -35,7 +37,10 @@ def authorize_schedule(ret_list):  #takes a dictionary  returns a list of tuples
 def authorize_user(an_event): # takes a dictionary, returns a list of user attributes tuples
   authorized_users = []
   unauthorized_users = []
-  user_list = eb.list_event_attendees({'id':int(an_event[0]['id'])})
+  try:
+    user_list = eb.list_event_attendees({'id':int(an_event[0]['id'])})
+  except:
+    user_list = eb.list_event_attendees({'id':int(an_event['id'])})
   #print user_list
   people = user_list["attendees"]
   for ident in people:
