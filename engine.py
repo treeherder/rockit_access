@@ -8,7 +8,9 @@ import json, datetime
 class Txtr(): #twilio is straightforward and does not need complicated wrappers
   def __init__(self):
     self.twil = TwilioRestClient(twil_auth["sid"], twil_auth["token"])
-  
+    self.mc = MongoClient() 
+    self.db = self.mc["rockit_access"]
+
 
   def send_text(self, message, rec):
     sms = self.twil.messages.create(body=message,
@@ -31,10 +33,22 @@ class Txtr(): #twilio is straightforward and does not need complicated wrappers
       if filter in msg["from"]:
          msgs.append((msg["body"], msg["sent"]))
     return msgs
- # def get_most_recent
 
+  def update_database(self):
+    c_s = []
+    c_l = [] 
+    for msg in self.get_texts():
+      c_l.append(msg["from"])
+    s_set = set(c_l)
+    #create a set of all numbers from which to name the collections:
+    for nbr in s_set:
+      client_collection = json.dumps(nbr)
+      c_s.append(client_collection.replace('"', '').strip("+"))
+    for c in set(c_s):
+      print c
 
-
+      print self.filter_texts(self.get_texts(), c)
+   
 class Calendar(): #handle eb API
   def __init__(self, status):
     self.today = datetime.date.today().strftime("%Y-%m-%d")  #format date for EB output

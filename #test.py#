@@ -1,14 +1,8 @@
-#!/usr/bin/python
+:#!/usr/bin/python
 # -*- coding: utf-8 -*-
 import json, time
 from engine import Calendar,Txtr
 from datetime import datetime, date, timedelta
-from pymongo.connection import Connection
-
-conn = Connection("localhost")
-db = conn["rockit_access"]
-
-
 t = Txtr()
 c = Calendar("Started")
 #print c.list_timeslots()
@@ -22,7 +16,7 @@ t_fmt =  "%a, %d %b %Y %H:%M:%S"  #time formating object
 
 def right_now():
   return ( datetime.strptime(datetime.now().strftime(t_fmt),t_fmt))
-def chk_msgs():
+def check_msgs():
     recent_messages = []
     for txt_msg in  t.get_texts():
       rec_at = ( json.dumps(txt_msg["sent"][:25]).strip('"') )
@@ -33,18 +27,10 @@ def chk_msgs():
         recent_messages.append( {'cell':txt_msg['from'], 'msg': txt_msg['body']} )
      #construct JSON object for messages database:
     return (recent_messages)
-
-def reply_msg():
-  t.update_database()  
-
-reply_msg()
-
-#Next step:
+#next step:
 # create database of messagesi with a system to flag them for whether or not they have been processed
 
-#print ( chk_msgs())
-#for msg in chk_msgs():
-#  db.update({"id": chk_msgs  
+print ( check_msgs())
    #if (d_o < right_now())
     #print datetime.now().strftime(t_fmt)
 #if (sent_at  datetime.now().strftime(t_fmt)
