@@ -45,9 +45,9 @@ class Txtr(): #twilio is straightforward and does not need complicated wrappers
       client_collection = json.dumps(nbr)
       c_s.append(client_collection.replace('"', '').strip("+"))
     for c in set(c_s):
-      print c
-
-      print self.filter_texts(self.get_texts(), c)
+      for itm in self.filter_texts(self.get_texts(), c):
+        self.db[c].save({"time":json.dumps(itm[1]), "msg":json.dumps(itm[0])})
+        #print({"time":json.dumps(itm[1]), "msg":json.dumps(itm[0])})
    
 class Calendar(): #handle eb API
   def __init__(self, status):
