@@ -27,7 +27,7 @@ class Txtr(): #twilio is straightforward and does not need complicated wrappers
     #filter text for recent time stamp
     #see texts from filter subject
     #see what they sent most recently
-    #look for something like "let me in" & relevant time 
+    #look for something like "let me in" & relevant time r
     msgs = []
     for msg in list_of_msgs:
       if filter in msg["from"]:
@@ -46,9 +46,11 @@ class Txtr(): #twilio is straightforward and does not need complicated wrappers
       c_s.append(client_collection.replace('"', '').strip("+"))
     for c in set(c_s):
       for itm in self.filter_texts(self.get_texts(), c):
-        self.db[c].save({"time":json.dumps(itm[1]), "msg":json.dumps(itm[0])})
+        self.db[c].save({"time":json.dumps(itm[1]), "msg":json.dumps(itm[0])}, w=0)
         #print({"time":json.dumps(itm[1]), "msg":json.dumps(itm[0])})
-   
+        self.db[c].ensure_index("time", unique =True)
+
+
 class Calendar(): #handle eb API
   def __init__(self, status):
     self.today = datetime.date.today().strftime("%Y-%m-%d")  #format date for EB output

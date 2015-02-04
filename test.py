@@ -14,65 +14,37 @@ dbup_flag = False  #database updated
 
 t = Txtr()
 c = Calendar("Started")
+#let people in with http://www.iobridge.com/widgets/static/id=lcDWU8QO2KJw
+print (c.list_timeslots())
 
 t_fmt =  "%a, %d %b %Y %H:%M:%S"  #time formating object
 
-print c.check_number("4155961150")
-print c.check_email("darrenoverby@gmail.com")
 def right_now():
   return ( datetime.strptime(datetime.now().strftime(t_fmt),t_fmt))
 
-
-def get_msgs():
-  recent_messages = []
-  for txt_msg in  t.get_texts():
-    rec_at = ( json.dumps(txt_msg["sent"][:25]).strip('"') )
-    d_o = datetime.strptime( rec_at, t_fmt) #date object
-    delta = right_now() - timedelta(minutes=10) #start a timedelta from 10 mins ago
-    if  d_o >= delta:# check to see if message was recd in the last 10 mins or so
-      #the time interval is close enough to be valid
-      recent_messages.append( {'cell':txt_msg['from'], 'msg': txt_msg['body']} )
-      #construct JSON object for messages database:
-  return (recent_messages)
-
 def chk_msgs():
-  authed =set([])
-  replied =set([])
-  for msg in get_msgs():
-    print c.check_number(msg["cell"])
-    if c.check_number(msg["cell"]) == True:
-      if msg["cell"] not in authed:
-        authed.update(msg["cell"])
-        print "curl_object.perform()"
-      elif msg["cell"] in authed:
-        print "authorized user"
-    else:
-      if msg["cell"] in replied:
-        t.send_text("please reply with your registered email address", \
-                    msg["cell"].replace('"', '').strip("+"))
-        replied.update(msg["cell"])
-        
-      else:
-        if "@" in msg["msg"]:
-          print json.dumps(msg["msg"])
-          print c.check_email(json.dumps(msg["msg"]))
-          if c.check_email(json.dumps(msg["msg"])):
-            print "curl_object.perform()"
+    recent_messages = []
+    #after updating the database, there should be 
+    #collection for each number that has attempted to contact us
+    #this collection should be full of documents containing
+    #user spceific data
+    for usr_prf in db.collection_names():
+      if "system" not in usr_prf:
+        for msgs in  db[usr_prf].find():
+          rec_at =  msgs["time"].replace('"', '')[:25]
+          d_o = datetime.strptime( rec_at, t_fmt)
+          #print d_o 
+          delta = right_now() - timedelta(minutes=10)
+          if  d_o >= delta:# check to see if message was recd in the last 10 mins or so
+             print msgs
+    #the time interval is close enough to be valid
+     #   recent_messages.append( {'cell':txt_msg['from'], 'msg': txt_msg['body']} )
+     #construct JSON object for messages database:
+    #return (recent_messages)
 
-#def reply_msg():
-  #curl_object.perform()
-
-while True:
-  if dbup_flag == False:
-    t.update_database()  
-    dbup_flag = True
-  elif dbup_flag == True:
-    if get_msgs():  #if there are new messages in the buffer
-      chk_msgs()
-
-
-#let people in with http://www.iobridge.com/widgets/static/id=lcDWU8QO2KJw
-
+t.update_database()
+chk_msgs()
+print "done"
 #Next step:
 # create database of messagesi with a system to flag them for whether or not they have been processed
 
