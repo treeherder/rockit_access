@@ -24,33 +24,50 @@ def right_now():
 
 def chk_msgs():
     recent_messages = []
-    #after updating the database, there should be 
+    #after updating the database, there should be
     #collection for each number that has attempted to contact us
     #this collection should be full of documents containing
     #user spceific data
     for usr_prf in db.collection_names():
       if "system" not in usr_prf:
         for msgs in  db[usr_prf].find():
-          rec_at =  msgs["time"].replace('"', '')[:25]
-          d_o = datetime.strptime( rec_at, t_fmt)
-          #print d_o 
-          delta = right_now() - timedelta(minutes=10)
-          if  d_o >= delta:# check to see if message was recd in the last 10 mins or so
-             print msgs
-    #the time interval is close enough to be valid
+          try:
+            rec_at =  msgs["time"].replace('"', '')[:25]
+           # print rec_at
+          except ValueError, e:
+            #print msgs
+            #print e
+            break
+          else:
+            d_o = datetime.strptime( rec_at, t_fmt)
+            #print d_o
+            delta = right_now() - timedelta(minutes=10)
+            if  d_o >= delta:# check to see if message was recd in the last 10 mins or so
+              try:
+                if msgs["read"] == "1":
+                  print "ignoring read message"
+              except KeyError, e:
+                  print msgs
+                  db[usr_prf].update( {"time": msgs["time"]}, {"$set": {"read": "1"}})
+                  #db[usr_prf].ensure_index("time", unique=True) #none of this double-dipping nonsense
+              else:
+                print "continuing after ignoring messages"
+    #THE time interval is close enough to be valid
      #   recent_messages.append( {'cell':txt_msg['from'], 'msg': txt_msg['body']} )
      #construct JSON object for messages database:
     #return (recent_messages)
 
-t.update_database()
-chk_msgs()
-print "done"
+while True:
+  t.update_database()
+  chk_msgs()
+
+
 #Next step:
 # create database of messagesi with a system to flag them for whether or not they have been processed
 
 #print ( chk_msgs())
 #for msg in chk_msgs():
-#  db.update({"id": chk_msgs  
+#  db.update({"id": chk_msgs
    #if (d_o < right_now())
     #print datetime.now().strftime(t_fmt)
 #if (sent_at  datetime.now().strftime(t_fmt)
