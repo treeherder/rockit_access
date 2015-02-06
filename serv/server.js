@@ -39,7 +39,7 @@ http.createServer(function (req, res) {
   });
 
   req.on('end', function() {
-    console.log('POSTed: ' + msg + 'from' + body);
+    console.log('POSTed: ' + msg + 'from' + from);
      res.writeHead(200);
     res.end(postHTML);
 
