@@ -8,9 +8,9 @@ a bare-bones access system API for a san francisco based co-working and hacking 
 Classes and methods from engine:
 ------------------
 Txtr:
-- called with an argument to initialize the database and collection (in this case db='test', col = 'rockit')  
+- called with an argument to initialize the database and collection (in this case db='test', col = 'rockit')
 - send_text("message", "receiver"):
-  -sends message to receiver 
+  -sends message to receiver
 - get text():
   - prints  all messages sent to the number hardcoded into the library
 
@@ -24,14 +24,20 @@ Calendar
     - [ ( (start date,  start time), (end date, end time) ) ,( (start date,  start time), (end date, end time) ), etc. ...]
 
 
-  
+
 ####Dependencies
 ------
 #####packages:
- -eventbrite
- -twilio
+ - eventbrite
+   * `pip install eventbrite`
+ - pycurl
+   * `pip install pycurl`
+ - twilio
+   * `pip install twilio`
 
-#####files:
+
+
+#####files for internal API:
 -secret.py
 
 
