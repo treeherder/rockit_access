@@ -20,7 +20,7 @@ def touch_events(status):  #returns a list of <status> event dictionaries
       #print r['events'][x]['event']['status']
   return (ret_list)
 
-def authorize_schedule(ret_list):  #takes a dictionary  returns a list of tuples that frame the event 
+def authorize_schedule(ret_list):  #takes a dictionary  returns a list of tuples that frame the event
   valid_times = []
   for ret in ret_list:
       (start_date,start_time) = json.dumps(ret_list[ret] ["start"]).split(' ')
@@ -37,6 +37,9 @@ def authorize_schedule(ret_list):  #takes a dictionary  returns a list of tuples
 def authorize_user(an_event): # takes a dictionary, returns a list of user attributes tuples
   authorized_users = []
   unauthorized_users = []
+  if not touch_events(an_event):
+    print "no events"
+    return
   try:
     user_list = eb.list_event_attendees({'id':int(an_event[0]['id'])})
   except:
@@ -48,11 +51,10 @@ def authorize_user(an_event): # takes a dictionary, returns a list of user attri
     try:
       name = visitor['first_name']
       phone = visitor['cell_phone']
-      email = visitor['email'] 
+      email = visitor['email']
       vis = {"name":name, "phone":phone, "email":email}
       authorized_users.append(vis)
     except KeyError, e:
       unauthorized_users.append(visitor['email'])
       #print "there was an error found on ", visitor['email'], e  # debugging
   return ({"allowed" : authorized_users, "denied":unauthorized_users})
-  
