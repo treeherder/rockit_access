@@ -40,8 +40,9 @@ Calendar
 #####files for internal API:
 -secret.py
 
-
 TODO:
 -----
-1. []make everything work of off secret auth info file
-2. []make engine methods return instead of simply print
+1. [X] make everything work of off secret auth info file
+2. [X] make engine methods return instead of simply print
+3. [X] handle real-time requests
+4. [] make example scripts

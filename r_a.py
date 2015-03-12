@@ -33,7 +33,10 @@ class Handler():
 
   def check_events(self):
     print type(self.events.list_timeslots())
+    print (self.events.list_timeslots())
+
     #check if there are times listed for an event "right now"
+
     if len(self.events.list_timeslots()) <=0:
       return (False)
 
