@@ -19,12 +19,24 @@ parser.add_argument("-m", "-message", dest="message", default=[], help="unicode 
 args = parser.parse_args()
 
 
+t_fmt =  "%a, %d %b %Y %H:%M:%S"  #time formating object
+
 def right_now():
 #a simple method to handle datetime objects
   return ( datetime.strptime(datetime.now().strftime(t_fmt),t_fmt))
 
 
-class Handler():
+def num_str(num):
+  if num[-1] == "1":
+    return(num +"st")
+  elif num[-1] == "2":
+    return(num + "nd")
+  elif num[-1] == "3":
+    return(num + "rd")
+  else:
+    return(num + "th")
+
+  class Handler():
 #this class exists to interface between the various data systems and the frontend
 #when the program is called, this class should spawn an instance that coresponds to a user session
 
@@ -41,8 +53,12 @@ class Handler():
     #check if there are times listed for an event "right now"
 
     if len(self.events.list_timeslots()) <=0:
-      return (False)
+      if (self.handler_id<=1):
+        self.send_text("i'm sorry there, are no guests expected at this time, maybe you should call your host?\r\n  good luck!", user)
+      elif (self.handler_id>=1):
+        self.send_text("the time is now:   {0}\r\n and this is now the {1} time you've tried".format(right_now(), num_str(self.handler_id)), user)
     else:
+
       return(True)
 
 
@@ -53,5 +69,4 @@ if args.set_status:
   h = Handler(args.user, args.handler_id, args.status)
 else:
   h = Handler(args.user, args.handler_id)
-  h.text.send_text("this is the default mnessage", args.user)
 print(h.check_events())

@@ -8,7 +8,7 @@ import json, datetime
 class Txtr(): #twilio is straightforward and does not need complicated wrappers
   def __init__(self):
     self.twil = TwilioRestClient(twil_auth["sid"], twil_auth["token"])
-    self.mc = MongoClient() 
+    self.mc = MongoClient()
     self.db = self.mc["rockit_access"]
 
 
@@ -36,7 +36,7 @@ class Txtr(): #twilio is straightforward and does not need complicated wrappers
 
   def update_database(self):
     c_s = []
-    c_l = [] 
+    c_l = []
     for msg in self.get_texts():
       c_l.append(msg["from"])
     s_set = set(c_l)
@@ -55,7 +55,7 @@ class Calendar(): #handle eb API
   def __init__(self, status):
     self.today = datetime.date.today().strftime("%Y-%m-%d")  #format date for EB output
     self.status = status
- 
+
   def list_timeslots(self): #returns list of timeslot tuples
     timeslots = []
     for events in touch_events(self.status):
@@ -75,8 +75,8 @@ class Calendar(): #handle eb API
         continue
     return False
 
-  def check_email(self, email):  #iterate over a list of guest tuples  
-    for listing in authorize_user(touch_events(self.status))["denied"] : 
+  def check_email(self, email):  #iterate over a list of guest tuples
+    for listing in authorize_user(touch_events(self.status))["denied"] :
       if email in listing:
         return True
       else:
