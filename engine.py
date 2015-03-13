@@ -68,20 +68,25 @@ class Calendar(): #handle eb API
     return (timeslots)
 
   def check_number(self, number):  #iterate over a list of guest tuples
-    for listing in authorize_user(touch_events(self.status))["allowed"] :
-      if number in listing["phone"]:
-        return (True)
-      else:
-        continue
-    return (False)
-
-  def check_email(self, email):  #iterate over a list of guest tuples
-    for listing in authorize_user(touch_events(self.status))["denied"] :
-      if email in listing:
-        return (True)
-      else:
-        continue
-    return (False)
+    try:
+      for listing in authorize_user(touch_events(self.status))["allowed"] :
+        if number in listing["phone"]:
+          return (True)
+        else:
+          continue
+      return (False)
+    except:
+      return(False)
+  def check_email(self, email):  #iterate over a list of guest tuple
+    try:
+      for listing in authorize_user(touch_events(self.status))["denied"] :
+        if email in listing:
+          return (True)
+        else:
+          continue
+      return (False)
+    except:
+      return (False)
 
 
   def print_attendee_data(self):

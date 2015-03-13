@@ -19,7 +19,15 @@ parser.add_argument("-m", "-message", dest="message", default=[], help="unicode 
 args = parser.parse_args()
 
 
-t_fmt =  "%a, %d %b %Y %H:%M:%S"  #time formating object
+t_fmt =  "%a, %d %b %Y %H:%M:%S"  #time formating def
+
+def open_door():
+  curl_object = pycurl.Curl()
+  curl_object.setopt(pycurl.URL, "http://www.iobridge.com/widgets/static/id=lcDWU8QO2KJw")
+  curl_object.perform()
+  curl_object.close()
+
+
 
 def right_now():
 #a simple method to handle datetime objects
@@ -27,6 +35,7 @@ def right_now():
 
 
 def num_str(num):
+  num = str(num)
   if num[-1] == "1":
     return(num +"st")
   elif num[-1] == "2":
@@ -51,15 +60,31 @@ class Handler():
     print (self.events.list_timeslots())
 
     #check if there are times listed for an event "right now"
-
+    #if there is NOT an event:
     if len(self.events.list_timeslots()) <=0:
       if (self.handler_id<=1):
-        self.send_text("i'm sorry there, are no guests expected at this time, maybe you should call your host?\r\n  good luck!", user)
+        self.text.send_text("I'm sorry, but there are no guests expected at this time. Maybe you should call your host?\r\n  good luck!", self.user)
       elif (self.handler_id>=1):
-        self.send_text("the time is now:   {0}\r\n and this is now the {1} time you've tried".format(right_now(), num_str(self.handler_id)), user)
+        self.text.send_text("the time is now:   {0}\r\n and this is now the {1} time you've tried".format(right_now(), num_str(self.handler_id)), self.user)
     else:
-
-      return(True)
+      #there is an event
+      #check to see if user is authorized for this event
+      #maybe just see if it's the daypass event?
+      if ( self.events.check_number(self.user) == True):
+        open_door()
+        self.text.send_text("door opening commenced, welcome to rockit colabs")
+      else:
+        if(args.msg_switch):
+          for word in args.message.split(" "):
+            if "@" in word:
+              if self.events.check_email(word):
+                open_door()
+                self.text.send_text("welcome to rockit colabs, enjoy your time.")
+              else:
+                self.text.send_text("I can't find a record of you registering for this event, I'm sorry.\r\n   Purchase a day pass here: rockitcolabs.com/daypass", self.user)
+            if "@" not in args.message:
+              self.text.send_text("try sending me your valid registered email", self.user)
+              return(True)
 
 
 
