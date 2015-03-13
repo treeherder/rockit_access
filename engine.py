@@ -21,7 +21,7 @@ class Txtr(): #twilio is straightforward and does not need complicated wrappers
     messages = []
     for message in self.twil.messages.list(to ="15102545456"):
       messages.append( {"body":message.body, "sent":message.date_sent, "from":message.from_} )
-    return messages
+    return (messages)
 
   def filter_texts(self, list_of_msgs, filter):
     #filter text for recent time stamp
@@ -65,29 +65,29 @@ class Calendar(): #handle eb API
       end_time_obj = datetime.datetime.strptime("{0}".format(events["end"]), date_format)
       #print end_time_obj
       timeslots.append( (start_time_obj, end_time_obj) )
-    return timeslots
+    return (timeslots)
 
   def check_number(self, number):  #iterate over a list of guest tuples
     for listing in authorize_user(touch_events(self.status))["allowed"] :
       if number in listing["phone"]:
-        return True
+        return (True)
       else:
         continue
-    return False
+    return (False)
 
   def check_email(self, email):  #iterate over a list of guest tuples
     for listing in authorize_user(touch_events(self.status))["denied"] :
       if email in listing:
-        return True
+        return (True)
       else:
         continue
-    return False
+    return (False)
 
 
   def print_attendee_data(self):
     for event in touch_events(self.status):
-      print event["id"]
+      print (event["id"])
       try:
-        print authorize_user(event)
+        print (authorize_user(event))
       except:
-        print "done"
+        print ("done")

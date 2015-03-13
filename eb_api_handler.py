@@ -38,7 +38,7 @@ def authorize_user(an_event): # takes a dictionary, returns a list of user attri
   authorized_users = []
   unauthorized_users = []
   if not touch_events(an_event):
-    print "no events"
+    print ("no events")
     return
   try:
     user_list = eb.list_event_attendees({'id':int(an_event[0]['id'])})
@@ -54,7 +54,7 @@ def authorize_user(an_event): # takes a dictionary, returns a list of user attri
       email = visitor['email']
       vis = {"name":name, "phone":phone, "email":email}
       authorized_users.append(vis)
-    except KeyError, e:
+    except (KeyError, e):
       unauthorized_users.append(visitor['email'])
       #print "there was an error found on ", visitor['email'], e  # debugging
   return ({"allowed" : authorized_users, "denied":unauthorized_users})

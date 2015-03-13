@@ -36,7 +36,7 @@ def num_str(num):
   else:
     return(num + "th")
 
-  class Handler():
+class Handler():
 #this class exists to interface between the various data systems and the frontend
 #when the program is called, this class should spawn an instance that coresponds to a user session
 
@@ -47,7 +47,7 @@ def num_str(num):
     self.events = Calendar(status) #going to have to parse these out, event by event
 
   def check_events(self):
-    print type(self.events.list_timeslots())
+    print( type(self.events.list_timeslots()))
     print (self.events.list_timeslots())
 
     #check if there are times listed for an event "right now"
