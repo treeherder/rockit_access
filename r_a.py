@@ -13,6 +13,9 @@ parser.add_argument("-u", "--user", help="the 11 digit phone number of the user 
 parser.add_argument("-S", "--set_status", dest="set_status", action="store_true", help="toggle status from default 'started' parameter" )
 parser.add_argument("-s", "--status", dest="status", help="the status of the field of events you wish to query")  #extraneous
 parser.add_argument("-f", "--flag", dest="handler_id", action="count", help="set flag for session state")
+parser.add_argument("-M", "--include-message", dest="msg_switch", action="store_true", help="flag this field to pass messages")
+parser.add_argument("-m", "-message", dest="message", default=[], help="unicode body of the message")
+
 args = parser.parse_args()
 
 
@@ -39,7 +42,8 @@ class Handler():
 
     if len(self.events.list_timeslots()) <=0:
       return (False)
-
+    else:
+      return(True)
 
 
 
@@ -49,5 +53,5 @@ if args.set_status:
   h = Handler(args.user, args.handler_id, args.status)
 else:
   h = Handler(args.user, args.handler_id)
-
+  h.text.send_text("this is the default mnessage", args.user)
 print(h.check_events())
