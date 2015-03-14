@@ -38,18 +38,17 @@ def authorize_user(an_event): # takes a dictionary, returns a list of user attri
   authorized_users = []
   unauthorized_users = []
   user_list = eb.list_event_attendees(an_event)
+  #print user_list
   people = user_list["attendees"]
-  """  print(people)
   for ident in people:
     visitor = ident['attendee']
     try:
-      name = visitor['first_name']
-      phone = visitor['cell_phone']
-      email = visitor['email']
+      name = json.dumps(visitor['first_name'])
+      phone = json.dumps(visitor['cell_phone'])
+      email = json.dumps(visitor['email'])
       vis = {"name":name, "phone":phone, "email":email}
       authorized_users.append(vis)
     except (KeyError, e):
-      unauthorized_users.append(visitor['email'])
+      unauthorized_users.append(json.dumps(visitor['email']))
       #print "there was an error found on ", visitor['email'], e  # debugging
   return ({"allowed" : authorized_users, "denied":unauthorized_users})
-  """
