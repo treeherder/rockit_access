@@ -72,8 +72,7 @@ class Calendar(): #handle eb API
       if number in listing["phone"]:
         return (True)
       else:
-        continue
-    return (False)
+        return (False)
 
   def check_email(self, email):  #iterate over a list of guest tuples
     for listing in authorize_user(touch_events(self.status))["denied"] :

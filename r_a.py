@@ -56,7 +56,7 @@ class Handler():
     self.events = Calendar(status) #going to have to parse these out, event by event
 
   def check_events(self):
-    print( type(self.events.list_timeslots()))
+    print(type(self.events.list_timeslots()))
     print (self.events.list_timeslots())
 
     #check if there are times listed for an event "right now"
@@ -70,7 +70,7 @@ class Handler():
       #there is an event
       #check to see if user is authorized for this event
       #maybe just see if it's the daypass event?
-      if ( self.events.check_number(self.user) == True):
+      if ( self.events.check_number(self.user)):
         open_door()
         self.text.send_text("door opening commenced, welcome to rockit colabs")
       else:
