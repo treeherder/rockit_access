@@ -56,7 +56,7 @@ class Handler():
     self.events = Calendar(status) #going to have to parse these out, event by event
 
   def check_events(self):
-    print(type(self.events.list_timeslots()))
+    print( type(self.events.list_timeslots()))
     print (self.events.list_timeslots())
 
     #check if there are times listed for an event "right now"
@@ -70,21 +70,22 @@ class Handler():
       #there is an event
       #check to see if user is authorized for this event
       #maybe just see if it's the daypass event?
-      if ( self.events.check_number(self.user)):
+      if (self.events.check_number(self.user)):
         open_door()
         self.text.send_text("door opening commenced, welcome to rockit colabs")
       else:
         if(args.msg_switch):
           for word in args.message.split(" "):
             if "@" in word:
-              if self.events.check_email(word):
+              print(word)
+              if(self.events.check_email(word)== True):
                 open_door()
                 self.text.send_text("welcome to rockit colabs, enjoy your time.")
               else:
-                self.text.send_text("I can't find a record of you registering for this event, I'm sorry.\r\n   Purchase a day pass here: rockitcolabs.com/daypass", self.user)
-            if "@" not in args.message:
-              self.text.send_text("try sending me your valid registered email", self.user)
-              return(True)
+                self.text.send_text("I can't find a record of you registering for this event, I'm sorry.  \r\nPurchase a day pass here: rockitcolabs.com/daypass", self.user)
+                if "@" not in args.message:
+                  self.text.send_text("try sending me your valid registered email", self.user)
+                  return(True)
 
 
 

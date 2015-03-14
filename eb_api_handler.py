@@ -35,10 +35,10 @@ def authorize_schedule(ret_list):  #takes a dictionary  returns a list of tuples
 
 
 def authorize_user(an_event): # takes a dictionary, returns a list of user attributes tuples
+  ret = {}
   authorized_users = []
   unauthorized_users = []
   user_list = eb.list_event_attendees(an_event)
-  #print user_list
   people = user_list["attendees"]
   for ident in people:
     visitor = ident['attendee']
@@ -48,7 +48,9 @@ def authorize_user(an_event): # takes a dictionary, returns a list of user attri
       email = json.dumps(visitor['email'])
       vis = {"name":name, "phone":phone, "email":email}
       authorized_users.append(vis)
+      ret["allowed"] = authorized_users
     except (KeyError, e):
       unauthorized_users.append(json.dumps(visitor['email']))
-      #print "there was an error found on ", visitor['email'], e  # debugging
-  return ({"allowed" : authorized_users, "denied":unauthorized_users})
+      ret["denied"] = unauthorized_users
+  printtype (ret)
+  return (ret)
