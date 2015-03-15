@@ -71,15 +71,15 @@ class Handler():
       #check to see if user is authorized for this event
       #maybe just see if it's the daypass event?
       if (self.events.check_number(self.user)):
-        open_door()
+        print "open_door()"
         self.text.send_text("door opening commenced, welcome to rockit colabs", self.user)
       else:
         if(args.msg_switch):
           for word in args.message.split(" "):
-            if "@" in word:
+            if "@" in word:  #look for a token to delimit email
               print(word)
               if(self.events.check_email(word)== True):
-                open_door()
+                print "open_door()"
                 self.text.send_text("welcome to rockit colabs, enjoy your time.", self.user)
               else:
                 self.text.send_text("I can't find a record of you registering for this event, I'm sorry.\r\nPurchase a day pass here: rockitcolabs.com/daypass", self.user)
