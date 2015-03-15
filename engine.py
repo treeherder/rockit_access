@@ -8,7 +8,7 @@ import json, datetime
 class Txtr(): #twilio is straightforward and does not need complicated wrappers
   def __init__(self):
     self.twil = TwilioRestClient(twil_auth["sid"], twil_auth["token"])
-    self.mc = MongoClient() 
+    self.mc = MongoClient()
     self.db = self.mc["rockit_access"]
 
 
@@ -21,7 +21,7 @@ class Txtr(): #twilio is straightforward and does not need complicated wrappers
     messages = []
     for message in self.twil.messages.list(to ="15102545456"):
       messages.append( {"body":message.body, "sent":message.date_sent, "from":message.from_} )
-    return messages
+    return (messages)
 
   def filter_texts(self, list_of_msgs, filter):
     #filter text for recent time stamp
@@ -36,7 +36,7 @@ class Txtr(): #twilio is straightforward and does not need complicated wrappers
 
   def update_database(self):
     c_s = []
-    c_l = [] 
+    c_l = []
     for msg in self.get_texts():
       c_l.append(msg["from"])
     s_set = set(c_l)
@@ -55,7 +55,7 @@ class Calendar(): #handle eb API
   def __init__(self, status):
     self.today = datetime.date.today().strftime("%Y-%m-%d")  #format date for EB output
     self.status = status
- 
+
   def list_timeslots(self): #returns list of timeslot tuples
     timeslots = []
     for events in touch_events(self.status):
@@ -65,29 +65,30 @@ class Calendar(): #handle eb API
       end_time_obj = datetime.datetime.strptime("{0}".format(events["end"]), date_format)
       #print end_time_obj
       timeslots.append( (start_time_obj, end_time_obj) )
-    return timeslots
+    return (timeslots)
 
   def check_number(self, number):  #iterate over a list of guest tuples
-    for listing in authorize_user(touch_events(self.status))["allowed"] :
-      if number in listing["phone"]:
-        return True
-      else:
-        continue
-    return False
-
-  def check_email(self, email):  #iterate over a list of guest tuples  
-    for listing in authorize_user(touch_events(self.status))["denied"] : 
-      if email in listing:
-        return True
-      else:
-        continue
-    return False
+    for event in touch_events(self.status):
+      for user in  authorize_user(event)["allowed"]:
+        if str(number) in str(user["phone"]):
+          return (True)
+        else:
+          return(False)
+  def check_email(self, email):  #iterate over a list of guest tuples
+    for event in touch_events(self.status):
+      for user in  authorize_user(event)["allowed"]:
+        if email in user["email"]:
+          return (True)
+      for user in authorize_user(event)["denied"]:
+        if email in user:
+          return(True)
+    return (False)
 
 
   def print_attendee_data(self):
     for event in touch_events(self.status):
-      print event["id"]
+      print (event["id"])
       try:
-        print authorize_user(event)
+        print(authorize_user(event))
       except:
-        print "done"
+        print ("done")

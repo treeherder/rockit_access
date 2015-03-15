@@ -9,7 +9,7 @@ conn = Connection("localhost")
 db = conn["rockit_access"]
 curl_object = pycurl.Curl()
 curl_object.setopt(pycurl.URL, "http://www.iobridge.com/widgets/static/id=lcDWU8QO2KJw")
-
+0
 dbup_flag = False  #database updated
 
 t = Txtr()
