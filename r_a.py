@@ -3,8 +3,8 @@
 import json,  pycurl, argparse
 from engine import Calendar,Txtr
 from datetime import datetime, date, timedelta
-
-
+from time import localtime
+from secret import url
 
 parser = argparse.ArgumentParser(description="authorize a user and start a session.  This program is designed to be called as a child process from the node application.")
 
@@ -14,24 +14,26 @@ parser.add_argument("-S", "--set_status", dest="set_status", action="store_true"
 parser.add_argument("-s", "--status", dest="status", help="the status of the field of events you wish to query")  #extraneous
 parser.add_argument("-f", "--flag", dest="handler_id", action="count", help="set flag for session state")
 parser.add_argument("-M", "--include-message", dest="msg_switch", action="store_true", help="flag this field to pass messages")
-parser.add_argument("-m", "-message", dest="message", default=[], help="unicode body of the message")
+parser.add_argument("-m", "-message", dest="message", help="unicode body of the message")
 
 args = parser.parse_args()
-
-
+print args.message
 t_fmt =  "%a, %d %b %Y %H:%M:%S"  #time formating def
 
 def open_door():
+
   curl_object = pycurl.Curl()
-  curl_object.setopt(pycurl.URL, "http://www.iobridge.com/widgets/static/id=lcDWU8QO2KJw")
+  curl_object.setopt(pycurl.URL, url)
   curl_object.perform()
   curl_object.close()
-
+  print("door opening")
+  print(right_now())
 
 
 def right_now():
 #a simple method to handle datetime objects
-  return ( datetime.strptime(datetime.now().strftime(t_fmt),t_fmt))
+  return ( datetime.strptime(datetime(*localtime()[:6]).strftime(t_fmt),t_fmt))
+  #return ( datetime.strptime(datetime.now().strftime(t_fmt),t_fmt))
 
 
 def num_str(num):
@@ -63,29 +65,37 @@ class Handler():
     #if there is NOT an event:
     if len(self.events.list_timeslots()) <=0:
       if (self.handler_id<=1):
-        self.text.send_text("I'm sorry, but there are no guests expected at this time. Maybe you should call your host?\r\n  good luck!", self.user)
+        self.text.send_text("I'm sorry, but there are no guests expected at this time. Maybe you should call your host?\r\n  Good luck!", self.user)
       elif (self.handler_id>=1):
-        self.text.send_text("the time is now:   {0}\r\n and this is now the {1} time you've tried".format(right_now(), num_str(self.handler_id)), self.user)
+        self.text.send_text("The time is now:   {0}\r\n and this is now the {1} time you've tried".format(right_now(), num_str(self.handler_id)), self.user)
     else:
       #there is an event
       #check to see if user is authorized for this event
       #maybe just see if it's the daypass event?
-      if (self.events.check_number(self.user)):
-        print "open_door()"
-        self.text.send_text("door opening commenced, welcome to rockit colabs", self.user)
+      if (self.events.check_number(str(self.user).strip("+"))):
+        if "letmein" in "".join(args.message).replace(" ", "").lower():
+          print ("authorized user, password")
+          open_door()
+          self.text.send_text("Door opening commenced. Welcome to rockit colabs", self.user)
+        elif "letmein" not in "".join(args.message).replace(" ", "").lower():
+          print ("authorized user no password")
+          self.send_text("Please text back with the password to unlock the door.", self.user)
       else:
-        if(args.msg_switch):
-          for word in args.message.split(" "):
-            if "@" in word:  #look for a token to delimit email
-              print(word)
-              if(self.events.check_email(word)== True):
-                print "open_door()"
-                self.text.send_text("welcome to rockit colabs, enjoy your time.", self.user)
-              else:
-                self.text.send_text("I can't find a record of you registering for this event, I'm sorry.\r\nPurchase a day pass here: rockitcolabs.com/daypass", self.user)
-                if "@" not in args.message:
-                  self.text.send_text("try sending me your valid registered email", self.user)
-                  return(True)
+        sent_flag = False
+        print("unauthorized, no password")
+        for word in args.message.split(" "):
+          if "@" in word:  #look for a token to delimit email
+            print(word)
+            if(self.events.check_email(word)== True):
+              open_door()
+              self.text.send_text("Welcome to rockit colabs, enjoy your time.", self.user)
+            else:
+              self.text.send_text("I can't find a record of you registering for this event, I'm sorry.\r\nPurchase a day pass here: rockitcolabs.com/daypass", self.user)
+          elif "@" not in args.message:
+            if sent_flag != True:
+              sent_flag = True
+              self.text.send_text("I don't understand.  Send your valid registered email or get a daypass here:\r\nrockitcolabs.com/daypass", self.user)
+    return(True)
 
 
 

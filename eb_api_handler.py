@@ -43,7 +43,7 @@ def authorize_user(an_event): # takes a dictionary, returns a list of user attri
     visitor = ident['attendee']
     try:
       name = json.dumps(visitor['first_name'])
-      phone =json.dumps( visitor['cell_phone'])
+      phone = ''.join(digit for digit in json.dumps( visitor['cell_phone']) if digit.isdigit())
       email = json.dumps(visitor['email'])
       vis = {"name":name, "phone":phone, "email":email}
       authorized_users.append(vis)
