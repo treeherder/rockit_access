@@ -68,13 +68,15 @@ class Handler():
       #and verifying with right_now()
       dbl_chk = Calendar("Live")
       for slot in dbl_chk.list_timeslots():
-        if ( (slot - right_now()).days <= 1):
+        if ( (slot[0] - right_now()).seconds <= 6000):
+          print ("time is close!")
+          print(slot[0] - right_now()).seconds
           sent_flag = False
           print("unauthorized, no password")
           for word in args.message.split(" "):
             if "@" in word:  #look for a token to delimit email
               print(word)
-              if(self.events.check_email(word)== True):
+              if(dbl_chk.events.check_email(word)== True):
                 open_door()
                 self.text.send_text("Welcome to rockit colabs, enjoy your time.", self.user)
               else:
