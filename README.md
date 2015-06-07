@@ -45,5 +45,5 @@ TODO:
 1. [X] make everything work of off secret auth info file
 2. [X] make engine methods return instead of simply print
 3. [X] handle real-time requests
-4. [] make example scripts
+4. [X] make example scripts
 5. [] make timechecking failsafe - spawn second instance under "Live" to check for right_now() ?

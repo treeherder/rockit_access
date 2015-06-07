@@ -37,6 +37,7 @@ def right_now():
 
 
 def num_str(num):
+# a function for declaring the suffix on an ordinal number will be useful for backtalk
   num = str(num)
   if num[-1] == "1":
     return(num +"st")
@@ -60,10 +61,16 @@ class Handler():
   def check_events(self):
     print( type(self.events.list_timeslots()))
     print (self.events.list_timeslots())
-
     #check if there are times listed for an event "right now"
     #if there is NOT an event:
     if len(self.events.list_timeslots()) <=0:
+      #check to see if there is a live event by spawning a new instance
+      #and verifying with right_now()
+      #dbl_chk = Calendar("Live")
+
+
+
+
       if (self.handler_id<=1):
         self.text.send_text("I'm sorry, but there are no guests expected at this time. Maybe you should call your host?\r\n  Good luck!", self.user)
       elif (self.handler_id>=1):
