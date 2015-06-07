@@ -66,10 +66,24 @@ class Handler():
     if len(self.events.list_timeslots()) <=0:
       #check to see if there is a live event by spawning a new instance
       #and verifying with right_now()
-      #dbl_chk = Calendar("Live")
-
-
-
+      dbl_chk = Calendar("Live")
+      for slot in dbl_chk.list_timeslots():
+        if ( (slot - right_now()).days <= 1):
+          sent_flag = False
+          print("unauthorized, no password")
+          for word in args.message.split(" "):
+            if "@" in word:  #look for a token to delimit email
+              print(word)
+              if(self.events.check_email(word)== True):
+                open_door()
+                self.text.send_text("Welcome to rockit colabs, enjoy your time.", self.user)
+              else:
+                self.text.send_text("I can't find a record of you registering for this event, I'm sorry.\r\nPurchase a day pass here: rockitcolabs.com/daypass", self.user)
+            elif "@" not in args.message:
+              if sent_flag != True:
+                sent_flag = True
+                self.text.send_text("I don't understand.  Send your valid registered email or get a daypass here:\r\nrockitcolabs.com/daypass", self.user)
+                return(True)
 
       if (self.handler_id<=1):
         self.text.send_text("I'm sorry, but there are no guests expected at this time. Maybe you should call your host?\r\n  Good luck!", self.user)
