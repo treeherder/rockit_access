@@ -1,20 +1,20 @@
-rockit_access
+###rockit_access
 =============
 
 a bare-bones access system API for a san francisco based co-working and hacking space
 
 
 
-Classes and methods from engine:
+####Classes and methods from engine:
 ------------------
-Txtr:
+#####Txtr:
 - called with an argument to initialize the database and collection (in this case db='test', col = 'rockit')
 - send_text("message", "receiver"):
   -sends message to receiver
 - get text():
   - prints  all messages sent to the number hardcoded into the library
 
-Calendar
+#####Calendar
 - provides query functions to scheduling data
 - should find  IS THERE AN EVENT RIGHT NOW
 - should find  WHO IS EXPECTED TO ATTEND
@@ -22,6 +22,10 @@ Calendar
 - list_timeslots():
   - a list of tuples of that are (start , end) tuples of (date, time) tuples
     - [ ( (start date,  start time), (end date, end time) ) ,( (start date,  start time), (end date, end time) ), etc. ...]
+
+####doorbell javascript server:
+---------
+`forever start --append -l forever.log -o out.log -e err.log  main.js `
 
 
 
@@ -37,7 +41,7 @@ Calendar
 
 
 
-#####files for internal API:
+#####files provided as templates for internal API:
 -secret.py
 
 TODO:
@@ -46,4 +50,4 @@ TODO:
 2. [X] make engine methods return instead of simply print
 3. [X] handle real-time requests
 4. [X] make example scripts
-5. [] make timechecking failsafe - spawn second instance under "Live" to check for right_now() ?
+5. [X] make timechecking failsafe - spawn second instance under "Live" to check for right_now() ?
